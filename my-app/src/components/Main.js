@@ -12,13 +12,15 @@ class Main extends React.Component {
 
         this.addItem = (event) => {
             if (event.key !== 'Enter') return
-            console.log(event.target.value);
+            let newItem = event.target.value;
+            event.target.value = "";
 
             this.setState(prevState => {
-                const copy = [...prevState.toDoItems, event.target.value];
+                const copy = { ...prevState.toDoItems };
+                copy[newItem] = "unchecked";
+                console.log(newItem, copy)
                 return { toDoItems: copy };
             })
-
         };
     };
     render() {
@@ -31,7 +33,8 @@ class Main extends React.Component {
                     autoFocus={true} >
                 </input>
                 <ul>
-                    {this.state.toDoItems.map((item, index) => <ToDoItem key={index} value={item} />)}
+                    {this.state.toDoItems &&
+                        Object.keys(this.state.toDoItems).map((item, index) => <ToDoItem key={index} value={item} />)}
 
                 </ul>
             </div>
