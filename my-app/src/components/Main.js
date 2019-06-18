@@ -1,13 +1,15 @@
 import React from 'react';
 import ToDoItem from './ToDoItem'
-
+import Footer from './Footer'
 
 class Main extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            toDoItems: {}
+            toDoItems: {},
+            filterParam: "all",
+            filteredTodos: {}
         };
 
         this.addItem = (event) => {
@@ -18,9 +20,9 @@ class Main extends React.Component {
             this.setState(prevState => {
                 const copy = { ...prevState.toDoItems };
                 copy[newItem] = false;
-                console.log(newItem, copy)
                 return { toDoItems: copy };
             })
+            this.filtered();
         };
 
         this.removeItem = (ToDoItem) => {
@@ -30,8 +32,8 @@ class Main extends React.Component {
                 delete copy[ToDoItem];
                 return { toDoItems: copy };
             })
+            this.filtered();
         };
-
 
         this.changeComplited = (ToDoItem) => {
 
@@ -40,8 +42,50 @@ class Main extends React.Component {
                 copy[ToDoItem] = !copy[ToDoItem];
                 return { toDoItems: copy };
             });
-
+            this.filtered();
         };
+
+        this.setFilter = (param) => {
+
+            this.setState({ filterParam: param }, function () { this.filtered() });
+        };
+
+        this.filtered = () => {
+
+            if (this.state.filterParam === "active") {
+
+                this.setState((prevState) => {
+                    const copy = { ...prevState.toDoItems };
+
+                    for (let key in copy) {
+                        if (copy[key] !== false) {
+                            delete copy[key];
+                        }
+                    }
+                    return { filteredTodos: copy };
+                })
+            } else if (this.state.filterParam === "all") {
+
+                this.setState((prevState) => {
+                    const copy = { ...prevState.toDoItems };
+                    return { filteredTodos: copy };
+                })
+            } else if (this.state.filterParam === "complited") {
+
+                this.setState((prevState) => {
+                    const copy = { ...prevState.toDoItems };
+
+                    for (let key in copy) {
+                        if (copy[key] === false) {
+                            delete copy[key];
+                        }
+                    }
+                    return { filteredTodos: copy };
+                })
+            }
+
+        }
+
     };
 
     render() {
@@ -54,8 +98,8 @@ class Main extends React.Component {
                     autoFocus={true} >
                 </input>
                 <ul>
-                    {this.state.toDoItems &&
-                        Object.keys(this.state.toDoItems).map((item, index) =>
+                    {this.state.filteredTodos &&
+                        Object.keys(this.state.filteredTodos).map((item, index) =>
                             <ToDoItem key={index}
                                 value={item}
                                 onRemove={this.removeItem}
@@ -63,6 +107,8 @@ class Main extends React.Component {
                                 changeChecked={this.changeComplited}
                             />)}
                 </ul>
+                <Footer count={Object.keys(this.state.filteredTodos).length}
+                    showTodos={this.setFilter} />
             </div>
         );
     }
