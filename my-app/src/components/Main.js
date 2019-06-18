@@ -22,6 +22,15 @@ class Main extends React.Component {
                 return { toDoItems: copy };
             })
         };
+
+        this.removeItem = (ToDoItem) => {
+            this.setState(prevState => {
+                const copy = { ...prevState.toDoItems };
+                console.log(ToDoItem)
+                delete copy[ToDoItem];
+                return { toDoItems: copy };
+            })
+        };
     };
     render() {
 
@@ -34,8 +43,8 @@ class Main extends React.Component {
                 </input>
                 <ul>
                     {this.state.toDoItems &&
-                        Object.keys(this.state.toDoItems).map((item, index) => <ToDoItem key={index} value={item} />)}
-
+                        Object.keys(this.state.toDoItems).map((item, index) =>
+                            <ToDoItem key={index} value={item} onRemove={this.removeItem} />)}
                 </ul>
             </div>
         );

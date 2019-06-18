@@ -6,7 +6,7 @@ function TodoItem(props) {
             <li>
                 {props.value}
                 {/* <input type="checkbox" checked={props.item.completed} /> */}
-                <button className="close">✕</button>
+                <button className="close" onClick={() => props.onRemove(props.value)} >✕</button>
             </li>
         </div>
     )
