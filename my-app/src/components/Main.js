@@ -17,21 +17,33 @@ class Main extends React.Component {
 
             this.setState(prevState => {
                 const copy = { ...prevState.toDoItems };
-                copy[newItem] = "unchecked";
+                copy[newItem] = false;
                 console.log(newItem, copy)
                 return { toDoItems: copy };
             })
         };
 
         this.removeItem = (ToDoItem) => {
+
             this.setState(prevState => {
                 const copy = { ...prevState.toDoItems };
-                console.log(ToDoItem)
                 delete copy[ToDoItem];
                 return { toDoItems: copy };
             })
         };
+
+
+        this.changeComplited = (ToDoItem) => {
+
+            this.setState((prevState) => {
+                const copy = { ...prevState.toDoItems };
+                copy[ToDoItem] = !copy[ToDoItem];
+                return { toDoItems: copy };
+            });
+
+        };
     };
+
     render() {
 
         return (
@@ -44,7 +56,12 @@ class Main extends React.Component {
                 <ul>
                     {this.state.toDoItems &&
                         Object.keys(this.state.toDoItems).map((item, index) =>
-                            <ToDoItem key={index} value={item} onRemove={this.removeItem} />)}
+                            <ToDoItem key={index}
+                                value={item}
+                                onRemove={this.removeItem}
+                                completed={this.state.toDoItems[item]}
+                                changeChecked={this.changeComplited}
+                            />)}
                 </ul>
             </div>
         );
