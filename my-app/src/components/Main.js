@@ -52,40 +52,25 @@ class Main extends React.Component {
 
         this.filtered = () => {
 
-            if (this.state.filterParam === "active") {
+            this.setState((prevState) => {
+                const copy = { ...prevState.toDoItems };
 
-                this.setState((prevState) => {
-                    const copy = { ...prevState.toDoItems };
-
+                if (this.state.filterParam === "active") {
                     for (let key in copy) {
                         if (copy[key] !== false) {
                             delete copy[key];
                         }
                     }
-                    return { filteredTodos: copy };
-                })
-            } else if (this.state.filterParam === "all") {
-
-                this.setState((prevState) => {
-                    const copy = { ...prevState.toDoItems };
-                    return { filteredTodos: copy };
-                })
-            } else if (this.state.filterParam === "complited") {
-
-                this.setState((prevState) => {
-                    const copy = { ...prevState.toDoItems };
-
+                } else if (this.state.filterParam === "complited") {
                     for (let key in copy) {
                         if (copy[key] === false) {
                             delete copy[key];
                         }
                     }
-                    return { filteredTodos: copy };
-                })
-            }
-
+                }
+                return { filteredTodos: copy };
+            })
         }
-
     };
 
     render() {
