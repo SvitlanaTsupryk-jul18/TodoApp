@@ -77,12 +77,14 @@ class Main extends React.Component {
 
         return (
             <div className="main" >
-                <input className="newTodo"
-                    placeholder="What needs to be done?"
-                    onKeyDown={this.addItem}
-                    autoFocus={true} >
-                </input>
-                <ul>
+                <div className="arrow">
+                    <input className="newTodo"
+                        placeholder="What needs to be done?"
+                        onKeyDown={this.addItem}
+                        autoFocus={true} >
+                    </input>
+                </div>
+                <ul className="list">
                     {this.state.filteredTodos &&
                         Object.keys(this.state.filteredTodos).map((item, index) =>
                             <ToDoItem key={index}

@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  margin: 0 auto;
+  width: 80%;
 }
 
 .App-header {
@@ -15,7 +17,7 @@
 .main{
   background-color: white;
     margin: auto;
-    width: 50%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,16 +33,44 @@
         0 20px 0 -10px #eee,
             /* The third layer shadow */
         0 20px 1px -9px rgba(0,0,0,0.15);
-    padding: 30px;
+    padding: 30px 0;
 }
 .newTodo{
   font-size: 24px;
   border: none;
   background: rgba(0, 0, 0, 0.003);
   color:rgb(77, 77, 77);
-    
+     
 }
 .newTodo:focus{
+  outline: none;
+  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.1);
+}
+.arrow{
+  display: inline-block;
+  position: relative; 
+  text-align: left;
+}
+.arrow:before {
+  content: '❯';
+  position: absolute;
+  left: -20%;
+  top: 5px;
+  transition: all .3s;
+  display: inline-block;
+}
+
+.arrow:hover::before{
+  transform: rotate(90deg);
+}
+
+/* .newTodo:before {
+	content: '✔';
+	position: absolute;
+	left: -20px;
+} */
+
+.newTodo:hover{
   outline: none;
   box-shadow: inset 0 -2px 1px rgba(0,0,0,0.1);
 }
@@ -48,8 +78,49 @@
   width: 100%;
   display: flex;
   justify-content: space-around;
+  padding-top: 20px;
 }
 .buttons{
   display: flex;
   justify-content: space-evenly;
+}
+.list{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.todoItem{
+  font-size: 24px;
+  padding: 15px 15px 15px 60px;
+  line-height: 1.2;
+  border-bottom: 1px solid #ededed;
+  display: flex;
+  justify-content: space-between;
+}
+.close{
+  visibility: hidden;
+}
+.todoItem:hover .close{
+  visibility: visible;
+}
+.check{
+  -webkit-appearance: none;
+  border: 1px solid #efefef;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+  outline: none;
+}
+.check::before{
+  content: '✔';
+	position: absolute;
+  left: 0px;
+  top:-10px;
+  color: green;
+  font-size: 1.7rem;
+  display: none;
+}
+.check:checked::before{
+display: block;
 }
