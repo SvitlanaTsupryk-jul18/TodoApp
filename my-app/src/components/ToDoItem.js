@@ -9,7 +9,7 @@ function TodoItem(props) {
                     checked={props.completed}
                     onChange={() => props.changeChecked(props.value)}
                 />
-                {props.value}
+                <label>{props.value}</label>
                 <button className="close"
                     onClick={() => props.onRemove(props.value)} >✕</button>
             </li>
