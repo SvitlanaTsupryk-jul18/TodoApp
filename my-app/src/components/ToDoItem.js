@@ -1,6 +1,7 @@
 import React from "react"
 
 function TodoItem(props) {
+    // const{completed,name,}
     return (
         <div className="todo" >
             <li className="todoItem">
@@ -9,9 +10,9 @@ function TodoItem(props) {
                     checked={props.completed}
                     onChange={() => props.changeChecked(props.value)}
                 />
-                <label>{props.value}</label>
+                <label>{props.name}</label>
                 <button className="close"
-                    onClick={() => props.onRemove(props.value)} >✕</button>
+                    onClick={() => props.onRemove(props.id)} >✕</button>
             </li>
         </ div>
     )

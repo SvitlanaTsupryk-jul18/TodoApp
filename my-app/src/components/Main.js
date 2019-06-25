@@ -7,9 +7,10 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            toDoItems: {},
+            toDoItems: [],
             filterParam: "all",
-            filteredTodos: {}
+            filteredTodos: [],
+            currentName: ''
         };
 
         this.addItem = (event) => {
@@ -17,29 +18,36 @@ class Main extends React.Component {
             let newItem = event.target.value;
             event.target.value = "";
 
-            this.setState(prevState => {
-                const copy = { ...prevState.toDoItems };
-                copy[newItem] = false;
-                return { toDoItems: copy };
-            })
-            this.filtered();
+            this.setState(prevState => ({
+                toDoItems: [
+                    ...prevState.toDoItems,
+                    {
+                        id: Date.now(),
+                        name: newItem,
+                        completed: false
+                    }
+                ]
+            }))
         };
 
         this.removeItem = (ToDoItem) => {
 
             this.setState(prevState => {
-                const copy = { ...prevState.toDoItems };
-                delete copy[ToDoItem];
+                const copy = [...prevState.toDoItems].filter((item) => item.id !== ToDoItem);
                 return { toDoItems: copy };
             })
-            this.filtered();
+
         };
 
         this.changeComplited = (ToDoItem) => {
 
-            this.setState((prevState) => {
-                const copy = { ...prevState.toDoItems };
-                copy[ToDoItem] = !copy[ToDoItem];
+            this.setState(prevState => {
+                const copy = [...prevState.toDoItems];
+                copy.forEach((item) => {
+                    if (item.id === ToDoItem) {
+                        item.completed = !item.completed
+                    }
+                })
                 return { toDoItems: copy };
             });
             this.filtered();
@@ -74,7 +82,9 @@ class Main extends React.Component {
     };
 
     render() {
+        // const visibleItems = this.state.toDoItems.filter(
 
+        // )
         return (
             <div className="main" >
                 <div className="arrow">
@@ -85,16 +95,17 @@ class Main extends React.Component {
                     </input>
                 </div>
                 <ul className="list">
-                    {this.state.filteredTodos &&
-                        Object.keys(this.state.filteredTodos).map((item, index) =>
-                            <ToDoItem key={index}
-                                value={item}
-                                onRemove={this.removeItem}
-                                completed={this.state.toDoItems[item]}
-                                changeChecked={this.changeComplited}
-                            />)}
+                    {/* {this.state.filteredTodos && */}
+                    {this.state.toDoItems.map((item) =>
+                        <ToDoItem key={item.id}
+                            id={item.id}
+                            name={item.name}
+                            onRemove={this.removeItem}
+                            completed={this.state.completed}
+                            changeChecked={this.changeComplited}
+                        />)}
                 </ul>
-                <Footer count={Object.keys(this.state.filteredTodos).length}
+                <Footer count={(this.state.filteredTodos).length}
                     showTodos={this.setFilter} />
             </div>
         );
