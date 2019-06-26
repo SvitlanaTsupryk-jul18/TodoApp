@@ -1,18 +1,18 @@
 import React from "react"
 
 function TodoItem(props) {
-    // const{completed,name,}
+    const { completed, name, id, changeChecked, onRemove } = props;
     return (
         <div className="todo" >
             <li className="todoItem">
                 <input type="checkbox"
                     className="check"
-                    checked={props.completed}
-                    onChange={() => props.changeChecked(props.value)}
+                    checked={completed}
+                    onChange={() => changeChecked(id)}
                 />
-                <label>{props.name}</label>
+                <label>{name}</label>
                 <button className="close"
-                    onClick={() => props.onRemove(props.id)} >✕</button>
+                    onClick={() => onRemove(id)} >✕</button>
             </li>
         </ div>
     )
