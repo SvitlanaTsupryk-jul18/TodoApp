@@ -94,7 +94,7 @@ class Main extends React.Component {
                             id={item.id}
                             name={item.name}
                             onRemove={this.removeItem}
-                            completed={this.state.completed}
+                            completed={item.completed}
                             changeChecked={this.changeComplited}
                         />)}
                 </ul>
