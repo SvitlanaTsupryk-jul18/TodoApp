@@ -1,18 +1,19 @@
 import React from "react"
 
 function Footer(props) {
+    const { count, showTodos } = props;
     return (
         <div className="footer">
-            <div className="counter">{props.count} item left</div>
+            <div className="counter">{count} item left</div>
             <div className="buttons">
                 <button type="button"
-                    onClick={() => props.showTodos("all")}>All</button>
+                    onClick={() => showTodos("all")}>All</button>
                 <button type="button"
-                    onClick={() => props.showTodos("active")}
+                    onClick={() => showTodos("active")}
                 >Active</button>
                 <button type="button"
-                    onClick={() => props.showTodos("complited")}
-                >Complited</button>
+                    onClick={() => showTodos("completed")}
+                >Completed</button>
             </div>
         </div>
     )

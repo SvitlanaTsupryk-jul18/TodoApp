@@ -7,95 +7,95 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            toDoItems: {},
+            toDoItems: [],
             filterParam: "all",
-            filteredTodos: {}
+            currentValue: ''
         };
 
-        this.addItem = (event) => {
-            if (event.key !== 'Enter') return
-            let newItem = event.target.value;
-            event.target.value = "";
+        this.setValue = (event) => {
+            this.setState({ currentValue: event.target.value })
+        }
 
-            this.setState(prevState => {
-                const copy = { ...prevState.toDoItems };
-                copy[newItem] = false;
-                return { toDoItems: copy };
-            })
-            this.filtered();
+        this.addItem = (event) => {
+
+            this.setState(prevState => ({
+                toDoItems: [
+                    ...prevState.toDoItems,
+                    {
+                        id: Date.now(),
+                        name: prevState.currentValue,
+                        completed: false
+                    }
+                ],
+                currentValue: ''
+            }))
+            event.preventDefault();
         };
 
         this.removeItem = (ToDoItem) => {
 
             this.setState(prevState => {
-                const copy = { ...prevState.toDoItems };
-                delete copy[ToDoItem];
-                return { toDoItems: copy };
+                return { toDoItems: [...prevState.toDoItems].filter((item) => item.id !== ToDoItem) };
             })
-            this.filtered();
+
         };
 
         this.changeComplited = (ToDoItem) => {
 
-            this.setState((prevState) => {
-                const copy = { ...prevState.toDoItems };
-                copy[ToDoItem] = !copy[ToDoItem];
+            this.setState(prevState => {
+                const copy = [...prevState.toDoItems];
+                copy.forEach((item) => {
+                    if (item.id === ToDoItem) {
+                        item.completed = !item.completed
+                    }
+                })
                 return { toDoItems: copy };
             });
-            this.filtered();
         };
 
         this.setFilter = (param) => {
-
-            this.setState({ filterParam: param }, function () { this.filtered() });
+            this.setState({ filterParam: param });
         };
 
-        this.filtered = () => {
+        this.filter = () => {
 
-            this.setState((prevState) => {
-                const copy = { ...prevState.toDoItems };
-
-                if (this.state.filterParam === "active") {
-                    for (let key in copy) {
-                        if (copy[key] !== false) {
-                            delete copy[key];
-                        }
-                    }
-                } else if (this.state.filterParam === "complited") {
-                    for (let key in copy) {
-                        if (copy[key] === false) {
-                            delete copy[key];
-                        }
-                    }
-                }
-                return { filteredTodos: copy };
-            })
-        }
-    };
+            switch (this.state.filterParam) {
+                case "active":
+                    return [...this.state.toDoItems].filter(item => item.completed === false);
+                case "completed":
+                    return [...this.state.toDoItems].filter(item => item.completed === true);
+                default: return [...this.state.toDoItems];
+            }
+        };
+    }
 
     render() {
-
+        const filteredTodos = this.filter();
         return (
             <div className="main" >
                 <div className="arrow">
-                    <input className="newTodo"
-                        placeholder="What needs to be done?"
-                        onKeyDown={this.addItem}
-                        autoFocus={true} >
-                    </input>
+                    <form onSubmit={this.addItem}>
+                        <input className="newTodo"
+                            placeholder="What needs to be done?"
+                            autoFocus={true}
+                            value={this.state.currentValue}
+                            onChange={this.setValue}>
+                        </input>
+                    </form>
                 </div>
                 <ul className="list">
-                    {this.state.filteredTodos &&
-                        Object.keys(this.state.filteredTodos).map((item, index) =>
-                            <ToDoItem key={index}
-                                value={item}
-                                onRemove={this.removeItem}
-                                completed={this.state.toDoItems[item]}
-                                changeChecked={this.changeComplited}
-                            />)}
+                    {filteredTodos.map((item) =>
+                        <ToDoItem key={item.id}
+                            id={item.id}
+                            name={item.name}
+                            onRemove={this.removeItem}
+                            completed={item.completed}
+                            changeChecked={this.changeComplited}
+                        />)}
                 </ul>
-                <Footer count={Object.keys(this.state.filteredTodos).length}
-                    showTodos={this.setFilter} />
+                <Footer count={filteredTodos.length}
+                    showTodos={this.setFilter}
+                />
             </div>
         );
     }
