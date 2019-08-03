@@ -35,8 +35,7 @@ class Main extends React.Component {
         this.removeItem = (ToDoItem) => {
 
             this.setState(prevState => {
-                const copy = [...prevState.toDoItems].filter((item) => item.id !== ToDoItem);
-                return { toDoItems: copy };
+                return { toDoItems: [...prevState.toDoItems].filter((item) => item.id !== ToDoItem) };
             })
 
         };
@@ -59,18 +58,14 @@ class Main extends React.Component {
         };
 
         this.filter = () => {
-            let copy = [...this.state.toDoItems];
-            let filteredItems;
+
             switch (this.state.filterParam) {
                 case "active":
-                    filteredItems = copy.filter(item => item.completed === false);
-                    break;
+                    return [...this.state.toDoItems].filter(item => item.completed === false);
                 case "completed":
-                    filteredItems = copy.filter(item => item.completed === true);
-                    break;
-                default: filteredItems = copy;
+                    return [...this.state.toDoItems].filter(item => item.completed === true);
+                default: return [...this.state.toDoItems];
             }
-            return filteredItems;
         };
     }
 
