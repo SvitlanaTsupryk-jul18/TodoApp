@@ -42,14 +42,28 @@ class Main extends React.Component {
 
         this.changeComplited = (ToDoItem) => {
 
+            // this.setState(prevState => {
+            //     const copy = [...prevState.toDoItems];
+            //     copy.forEach((item) => {
+            //         if (item.id === ToDoItem) {
+            //             item.completed = !item.completed
+            //         }
+            //     })
+            //     return { toDoItems: copy };
+            // });
+
             this.setState(prevState => {
-                const copy = [...prevState.toDoItems];
-                copy.forEach((item) => {
-                    if (item.id === ToDoItem) {
-                        item.completed = !item.completed
-                    }
-                })
-                return { toDoItems: copy };
+                return {
+                    toDoItems: prevState.toDoItems.map(item => {
+                        if (item.id === ToDoItem) {
+                            return {
+                                ...item,
+                                completed: !item.completed,
+                            };
+                        }
+                        return item;
+                    })
+                }
             });
         };
 
